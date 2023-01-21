@@ -1,6 +1,6 @@
 import pygame
 from pygame.constants import QUIT, K_DOWN, K_UP, K_LEFT, K_RIGHT
-import time
+from copy import copy
 from random import randint
 
 
@@ -40,11 +40,11 @@ def create_bonus():
     return [bonus, bonus_rect, bonus_speed]
 
 
-CREATE_ENEMY = pygame.USEREVENT +1
+CREATE_ENEMY = pygame.USEREVENT + 1
 pygame.time.set_timer(CREATE_ENEMY, 1500)
 
-CREATE_BONUS = pygame.USEREVENT +1
-pygame.time.set_timer(CREATE_BONUS, 2000)
+CREATE_BONUS = pygame.USEREVENT + 1
+pygame.time.set_timer(CREATE_BONUS, 1600)
 
 
 enemies = []
@@ -76,7 +76,7 @@ while is_working:
         if ball_rect.right <= width:
             ball_rect = ball_rect.move((speed, 0))
 
-    for enemy in enemies:
+    for enemy in copy(enemies):
         enemy[1] = enemy[1].move(-enemy[2],0)
         main_surface.blit(enemy[0], enemy[1])
         if enemy[1].left < 0:
@@ -84,7 +84,7 @@ while is_working:
         if ball_rect.colliderect(enemy[1]):
             enemies.pop(enemies.index(enemy))
 
-    for bonus in bonuses:
+    for bonus in copy(bonuses):
         bonus[1] = bonus[1].move(0,bonus[2])
         main_surface.blit(bonus[0], bonus[1])
         if bonus[1].bottom > heigth:
